@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SELF_DIRNAME=$(cd "$(dirname $(type -p "$0"))" ; pwd)
-source "${SELF_DIRNAME}/colors.inc"
+source "${SELF_DIRNAME}/../bash-colors/colors.inc"
 
 echo_color "Looking for an update..." $COLOR_CYAN
 lines=$(echo n | git update-git-for-windows 2>&1)

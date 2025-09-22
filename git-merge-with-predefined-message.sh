@@ -4,7 +4,7 @@ VERSION='1.2.1'
 
 # Execute this script with 'bash -x SCRIPT' to activate debugging
 if [ ${-/*x*/x} == 'x' ]; then
-    PS4='+ ${BASH_SOURCE[0]}:${LINENO} ${FUNCNAME[0]}() |err=$?| \$ '
+    PS4='+ $(basename ${BASH_SOURCE[0]}):${LINENO} ${FUNCNAME[0]}() |err=$?| \$ '
 fi
 set -e  # Fail on first error
 
@@ -20,7 +20,7 @@ SELF_NAME="${SELF_NAME%.sh}"
 SELF_DIRNAME=$(cd "$(dirname $(type -p "$0"))" ; pwd)
 
 # Includes
-source "${SELF_DIRNAME}/colors.inc"
+source "${SELF_DIRNAME}/../bash-colors/colors.inc"
 
 function _version()
 {

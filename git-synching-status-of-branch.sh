@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='1.1.2'
+VERSION='1.1.3'
 
 # Execute this script with 'bash -x SCRIPT' to activate debugging
 if [ ${-/*x*/x} == 'x' ]; then
@@ -20,7 +20,7 @@ SELF_NAME="${SELF_NAME%.sh}"
 SELF_DIRNAME=$(cd "$(dirname $(type -p "$0"))" ; pwd)
 
 # Includes
-source "${SELF_DIRNAME}/colors.inc"
+source "${SELF_DIRNAME}/../bash-colors/colors.inc"
 
 function _version()
 {
@@ -40,6 +40,7 @@ Tell if a given local branch is:
    * untracked ; it was never tracked
    * orphan ; its remote branch is dead
 Without any given branch, will analyse all your local branches.
+Use "HEAD" or "." to analyse only the current local branch.
 
 You must be in a local clone of a repo.
 
@@ -122,6 +123,7 @@ function _main()
 function _do_one_branch()
 {
     local branch_name="$1"
+    [ "${branch_name}" == "." ] && branch_name="HEAD"
     if [ "${branch_name}" == "HEAD" ]; then
         branch_name=$(git rev-parse --abbrev-ref HEAD)
         # The |branch_name| can starts with "heads/" in case of a branch upstreamed with
