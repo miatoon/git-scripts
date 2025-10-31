@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='1.2.0'
+VERSION='1.2.1'
 
 # Execute this script with 'bash -x SCRIPT' to activate debugging
 if [ ${-/*x*/x} == 'x' ]; then
@@ -34,8 +34,9 @@ Usage:
     ${SELF_NAME} [OPTIONS] branch_or_tag -- [ARGS]
 
 Merge the given branch or tag in the current branch with a predefined message.
-  In case the given branch is 'origin/master' or 'master', the predefined
-  messagewill be something like "Sync with master".
+In case the given branch is the default one ('master' or 'main', w/ or w/o
+'origin/' prefix), the predefined message will be "Sync with 'master'" or
+"Sync with 'main'".
 
     branch_or_tag   The branch (local or remote) or the tag to merge into the
                     current branch.
@@ -99,13 +100,14 @@ function _merge_with_predefined_message()
     local branch_to_merge_no_origin=${branch_to_merge#origin/}
     local is_a_tag=$2
     local current_branch=$(git branch --show-current)
+    local default_branch=$(git remote show origin | sed -n '/HEAD branch:/s/.*: //p')
 
     local type_str="branch"
     [ $is_a_tag -ge 1 ] && type_str="tag"
 
     local err=0
-    if [ "${branch_to_merge_no_origin}" == "master" ]; then  # TODO handle "main" branch
-        echo_color "Synching with master, with predefined message..." $COLOR_YELLOW
+    if [ "${branch_to_merge_no_origin}" == "${default_branch}" ]; then
+        echo_color "Synching with ${default_branch}, with predefined message..." $COLOR_YELLOW
         git merge --no-ff "${branch_to_merge}" -m "Sync with '${branch_to_merge_no_origin}'" ${other_args}
         err=$?
     else
