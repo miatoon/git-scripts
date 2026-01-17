@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='1.0.0'
+VERSION='1.0.1'
 
 # Execute this script with 'bash -x SCRIPT' to activate debugging
 if [ ${-/*x*/x} == 'x' ]; then
@@ -72,8 +72,6 @@ function _main()
         ;;
         esac
     done
-
-    # local branch_name=$(git rev-parse --abbrev-ref HEAD) # TODO Remove if useless
 
     if [ $# -ne 2 ]; then
         >&2 echo_color 'Error: You have to give a local branch and a target ref!' $COLOR_RED
