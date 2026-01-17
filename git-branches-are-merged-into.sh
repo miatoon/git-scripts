@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='0.1.2'
+VERSION='1.0.0'
 
 # Execute this script with 'bash -x SCRIPT' to activate debugging
 if [ ${-/*x*/x} == 'x' ]; then
@@ -85,10 +85,10 @@ function _main()
         # Validate |target_branch| exists, locally or remotely
         if [ "${target_branch#origin/}" == "${target_branch}" ]; then
             # Check for a local branch
-            is_exist=$(git branch --list --format="%(refname:short)" | grep -c -F "${target_branch}")
+            is_exist=$(git branch --list --format="%(refname:short)" | grep -c -E "^${target_branch}$")
         else
             # Check for a remote branch
-            is_exist=$(git branch --list --remote --format="%(refname:short)" | grep -c -F "${target_branch}")
+            is_exist=$(git branch --list --remote --format="%(refname:short)" | grep -c -E "^${target_branch}$")
         fi
         if [ $is_exist -eq 0 ]; then
             >&2 echo 'Error: You have to give an existing local or remote branch !'
@@ -99,7 +99,7 @@ function _main()
         if [ $# -ge 2 ]; then
             remote_branch="$2"
             # Validate |remote_branch| exists and is a remote branch
-            is_exist=$(git branch --list --remote --format="%(refname:short)" | grep -c -F "${remote_branch}")
+            is_exist=$(git branch --list --remote --format="%(refname:short)" | grep -c -E "^${remote_branch}$")
             if [ $is_exist -eq 0 ]; then
                 >&2 echo 'Error: "remote-branch" must exist and be a remote branch !'
                 exit 2
